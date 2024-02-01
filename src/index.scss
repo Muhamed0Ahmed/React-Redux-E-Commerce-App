@@ -1,0 +1,43 @@
+
+:root{
+    // --mainColorBg:#000000;
+    // --mainColorFont : #A7D129;
+    // --secColorDark:#3E432E;
+    // --secColorLight:#616F39;
+    // --colorWhite:#fff;
+    // --colorWhiteLow:rgb(231, 217, 217);
+
+    --color-yellow:#ff9900;
+    --color-blue:#146eb4;
+    --color-blue-dark:#232F3E;
+    --color-black:#000;
+    --color-dark:#131A22;
+    --color-light:#f2f2f2;
+    --colorWhite:#fff;
+
+    --color-green:rgb(6, 85, 36);
+
+
+}
+
+*{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+    perspective: 600px;
+    
+    
+}
+
+body{
+    padding: 0;
+    margin:0;
+   
+    
+}
+a{
+    text-decoration:none;
+    color:white;
+    padding:10px;
+}
+
