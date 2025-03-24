@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import Item from "./Item";
 import SHOP_DATA from "../../Data/ShopData";
-import "./products.scss"
+import "./products.scss";
 
 function Group() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/products/getProducts", {
+    // fetch("http://localhost:8000/api/products/getProducts", {
+    fetch("https://fakestoreapi.com/products", {
       method: "Get",
       headers: {
         "content-type": "application/json",
@@ -16,8 +17,6 @@ function Group() {
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => setProducts(SHOP_DATA));
-
-    
   }, []);
   return (
     <div className="products-container">

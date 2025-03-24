@@ -1,20 +1,20 @@
 import { faBars,  faLocationDot,faCartShopping, faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import usFlag from "../../image/us-flag-inverted.png";
-import React from "react";
+
 import {useDispatch, useSelector} from "react-redux"
 import "./Header.scss";
 import { Link } from "react-router-dom";
-import Sidebar from "../Sidebar/Sidebar";
-import HeaderSeconary from "./HeaderSecondary";
-import { authFaild, logOut } from "../../store/AuthSlice/AuthAction";
+// import Sidebar from "../Sidebar/Sidebar";
+// import HeaderSeconary from "./HeaderSecondary";
+// import { authFaild, logOut } from "../../store/AuthSlice/AuthAction";
 
 const Header = () => {
   const dispatch = useDispatch()
   const isLogIn = useSelector(state => state.auth.isLogIn);
   const user = useSelector(state => state.auth.user);
-  const productCart = useSelector(state => state.cart.productCart);
-  
+  const productCart = useSelector(state => state.cart.items);
+  const itemsIds = useSelector(state => state.cart.itemsIds)
   const userName = isLogIn ? localStorage.name : "user";
   const showSideBar = (e) => {
   const elementSideContainer = document.querySelector(".sidebar-container");
@@ -23,7 +23,7 @@ const Header = () => {
 
 
   const signOutFunction = () => {
-    dispatch(logOut());
+    dispatch(user.logOut());
     // localStorage.setItem("name", "");
     // localStorage.setItem("id", "");
     // localStorage.setItem("email", "");
@@ -78,7 +78,7 @@ const Header = () => {
           </div>
           <div className="header-cart">
             <Link to="/cartShop"><FontAwesomeIcon icon={faCartShopping} /></Link>
-            <span className="cart-counter">{productCart.length}</span>
+            <span className="cart-counter">{itemsIds.length}</span>
           </div>
           
 

@@ -1,13 +1,7 @@
-import { ADD_QUANTITY,  ADD_TO_CART , REMOVE_FROM_CART ,SUB_QUANTITY, EMPTY_CART, ADD_ALL_CART, SUB_TOTAL_PRICE} from "./CartTypes"
+import { ADD_QUANTITY,  ADD_TO_CART , REMOVE_FROM_CART ,SUB_QUANTITY, EMPTY_CART} from "./CartTypes"
 
 
-const addAllCart = (products) => {
-    return {
-        type:ADD_ALL_CART,
-        payload: products
-    }
 
-}
 const addToCartAction = (item) => {
     return {
         type: ADD_TO_CART,
@@ -39,10 +33,6 @@ const emptyCart = () => {
         type: EMPTY_CART
     }
 }
-const subTotalPrice = () => {
-    return {
-        type :  SUB_TOTAL_PRICE
-    }
-}
 
-export {addQuantity,addToCartAction , removeFromCartAction, subQuantity,emptyCart, addAllCart, subTotalPrice}
+
+export {addQuantity,addToCartAction , removeFromCartAction, subQuantity,emptyCart}

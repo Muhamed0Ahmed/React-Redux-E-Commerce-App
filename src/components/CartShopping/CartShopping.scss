@@ -2,53 +2,49 @@
   .container {
     // background-color: #EBEBEB;
 
+    .header-container {
+      background-color: var(--color-black);
 
-    .header-container{
-        background-color: var(--color-black);
+      .header-cart {
+        max-width: 1380px;
 
+        margin: auto;
+        color: var(--colorWhite);
+        display: flex;
+        justify-content: space-between;
 
-        .header-cart {
-            max-width: 1380px;
-            
-            margin:auto;
-            color: var(--colorWhite);
-            display:flex;
-            justify-content: space-between;
-            
-      
-            h2 {
-              padding: 20px 15px;
-              font-size: 36px;
-              font-family: Helvetica, sans-serif;
-              text-shadow: 2px 2px var(--color-yellow);
-            }
-            h4{
-              color:white;
-              padding:20px 15px;
-              font-size: 24px;
-      
-            }
-          }
-    }
-    
-
-    p.emptyCart {
-      text-align: center;
-      padding: 20px;
-      font-size: 36px;
-      height: calc(100vh - 200px);
-      a {
-        color: var(--color-green);
+        h2 {
+          padding: 20px 15px;
+          font-size: 36px;
+          font-family: Helvetica, sans-serif;
+          text-shadow: 2px 2px var(--color-yellow);
+        }
+        h4 {
+          color: white;
+          padding: 20px 15px;
+          font-size: 24px;
+        }
       }
     }
-    .carts {
+
+    .cart-container {
       max-width: 1380px;
-      margin:auto;
-   
-     .item-cart {
+      margin: auto;
+
+      p.cart-empty-message {
+        text-align: center;
+        padding: 20px;
+        font-size: 36px;
+        height: calc(100vh - 200px);
+        a {
+          color: var(--color-green);
+        }
+      }
+
+      .cart-item {
         display: flex;
         width: 100%;
-        justify-content: space-between;
+        justify-content: flex-start;
         padding: 20px 30px;
         margin: 5px;
         border: 2px solid green;
@@ -56,15 +52,11 @@
         border-radius: 10px;
         max-width: 1380px;
 
-        .img-item {
-          background-color: black;
-        }
-
-        .inform-item {
+        .item-details {
           display: flex;
           flex-direction: column;
-          justify-content: start;
-          align-items: start;
+          justify-content: flex-start;
+          align-items: flex-start;
 
           h4 {
             font-size: 24px;
@@ -76,10 +68,10 @@
           p {
             padding: 10px;
             margin: 10px;
-            font-size: 16px;
+            font-size: 24px;
           }
 
-          .btns-quantity {
+          .quantity-controls {
             font-size: 20px;
 
             button {
@@ -90,12 +82,12 @@
 
               &:hover {
                 color: white;
-                background-color:var(--color-green)
+                background-color: var(--color-green);
               }
             }
           }
 
-          .price-item {
+          .item-total {
             font-size: 24px;
             padding: 10px 15px;
             text-align: start;
@@ -103,28 +95,26 @@
         }
       }
     }
-    .cart-total-price{
-        background-color: rgb(230, 220, 220);
-        display:flex;
-        justify-content: space-between;
-        padding:10px ;
-        font-size:18px;
-        .total{
-            font-size:24px;
-            span{
-                color:green;
-                font-size:28px;
-                font-weight: bolder;
-            }
-
+    .cart-total-price {
+      background-color: rgb(230, 220, 220);
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      font-size: 18px;
+      .total {
+        font-size: 24px;
+        span {
+          color: green;
+          font-size: 28px;
+          font-weight: bolder;
         }
-        button{
-            background-color: var(--color-green);
-            color:var(--colorWhite);
-            padding:10px 15px;
-            border-radius: 3px;
-            
-        }
+      }
+      button {
+        background-color: var(--color-green);
+        color: var(--colorWhite);
+        padding: 10px 15px;
+        border-radius: 3px;
+      }
     }
   }
 }

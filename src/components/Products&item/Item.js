@@ -1,73 +1,39 @@
 import "./products.scss";
 import { useDispatch, useSelector } from "react-redux";
-import {  addQuantity, addToCartAction } from "../../store/Cart/CartActions";
+import { addQuantity, addToCartAction } from "../../store/Cart/CartActions";
 
 function Item(props) {
-  const productCart = useSelector((state) => state.cart.productCart);
-  const isLogined = useSelector((state) => state.auth.isLogIn);
-  
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+  const isLogined = useSelector((state) => state.auth.isLogIn);
 
-  const addToCart = (item) => {
-    if (isLogined) {
-      if (productCart.length === 0) {
-        dispatch(addToCartAction(item));
-        localStorage.setItem(
-          "cart",
-          JSON.stringify({
-            _id: item["_id"],
-            title: item.title,
-            photo: item.photo,
-            price: item.price,
-            quantity: 1,
-          })
-        );
-      } else {
-        let newItem = productCart.some((product) => product["_id"] === item["_id"]);
-        
-        if(newItem)
-          {
-            dispatch(addQuantity(item["_id"]));
-            
-            //  localStorage.setItem("cart", JSON.stringify(productCart));
+  const handleAddToCart = () => {
+    if (!isLogined) return alert("Please log in to add items to cart");
 
-            
-           
-          }else{
-            dispatch(addToCartAction(item));
-            // let newCart = [...productCart,{
-            //   id: item["_id"],
-            //   title: item.title,
-            //   photo: item.photo,
-            //   price: item.price,
-            //   quantity: 1,
-            // }]
-          // localStorage.setItem("cart", JSON.stringify(newCart));
-          };
-         
-     
-            
-       
-        localStorage.setItem("cart", JSON.stringify([...productCart, item]));
-      }
+    if (cartItems[item.id]) {
+      //Item exists - increase quantity
+      dispatch(addToCartAction(item));
     } else {
-      alert("please log in");
+      // New Item - add to  cart
+      dispatch(
+        addToCartAction({
+          id: item.id,
+          title: item.title,
+          image: item.image,
+          price: item.price,
+          quantity: 1,
+        })
+      );
     }
   };
   const { item } = props;
   return (
     <div className="item">
-      <div
-        style={{
-          width: "230px",
-          height: "250px",
-          backgroundImage: `url(${item.photo})`,
-        }}
-      />
+      <img src={item.image} width={230} height={250} alt={item.name} />
       <h4>{item.title}</h4>
       <span className="price">Price : {item.price} $</span>
       <div className="btns-cart">
-        <button className="add-cart-btn" onClick={() => addToCart(item)}>
+        <button className="add-cart-btn" onClick={() => handleAddToCart(item)}>
           Add To Cart
         </button>
         <button className="buy-now-btn">Buy Now</button>

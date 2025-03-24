@@ -1,94 +1,122 @@
-
 import {
   ADD_QUANTITY,
   ADD_TO_CART,
   REMOVE_FROM_CART,
   SUB_QUANTITY,
   EMPTY_CART,
-  ADD_ALL_CART,
-  SUB_TOTAL_PRICE
 } from "./CartTypes";
 
 const initalState = {
-  productCart: [],
-  totalPrice : 0,
+  items: {}, // Using an object for O(1) lookups
+  itemsIds: [], // Array of item IDs for order preservation
+  totalPrice: 0,
 };
+// Helper functon for price conversion
+const dollersToCents = (dollars) => Math.round(dollars * 100);
+const centsToDollars = (cents) => (cents / 100).toFixed(2);
+
 const CartReducer = (state = initalState, action) => {
   switch (action.type) {
-      case ADD_ALL_CART: 
-      return{
-        ...state,
-        productCart: [...action.payload],
-        
+    case ADD_TO_CART: {
+      const { id } = action.payload;
+      //check if item already exists
+      if (state.items[id]) {
+        return {
+          ...state,
+          items: {
+            ...state.items,
+            [id]: {
+              ...state.items[id],
+              quantity: state.items[id].quantity + 1,
+            },
+          },
+          totalPrice: state.totalPrice + dollersToCents(action.payload.price),
+        };
+        // alert("this item is on cart");
       }
-   
-      case ADD_TO_CART:
       return {
         ...state,
-        productCart: [...state.productCart,{
-          ...action.payload,
-          quantity: 1,
-        }],
-        totalPrice: state.totalPrice + action.payload.price,
+        items: {
+          ...state.items,
+          [id]: {
+            ...action.payload,
+            quantity: 1,
+          },
+        },
+        itemsIds: [...state.itemsIds, id],
+        totalPrice: state.totalPrice + dollersToCents(action.payload.price),
       };
-    case REMOVE_FROM_CART:
-      return {
-        ...state,
-        productCart: state.productCart.filter((item) => item["_id"] !== action.payload),
-        totalPrice: state.totalPrice - (state.productCart.filter((item) => item["_id"] == action.payload)[0].price* state.productCart.filter((item) => item["_id"] === action.payload)[0].quantity),
-      };
-    case ADD_QUANTITY:
-      
-      return {
-        ...state,
-        productCart: state.productCart.map((product) =>
-          product["_id"] === action.payload
-            ? {
-                ...product,
-                quantity: product.quantity + 1,
-              }
-            : product
-        ),
-        totalPrice: state.totalPrice + state.productCart.filter(item => item["_id"] === action.payload)[0].price,
-      };
+    }
+    case REMOVE_FROM_CART: {
+      const { id } = action.payload;
+      const itemToRemove = state.items[id];
 
-    case SUB_QUANTITY:
       return {
         ...state,
-        productCart: state.productCart.map((product) =>
-          product["_id"] === action.payload
-            ? {
-                ...product,
-                quantity: Math.max(product.quantity - 1, 0),
-              }
-            : product
+        items: Object.fromEntries(
+          Object.keys(state.items).filter(([key]) => key !== id)
         ),
-        totalPrice: state.totalPrice - state.productCart.filter(item => item["_id"] === action.payload)[0].price,
-
+        itemsIds: state.itemsIds.filter((key) => key !== id),
+        totalPrice:
+          state.totalPrice -
+          dollersToCents(itemToRemove.price * itemToRemove.quantity),
       };
-    case EMPTY_CART:
-      return {
-        ...state,
-        productCart: state.productCart.map((product) =>
-          product.selected
-            ? { ...product, selected: false, quantity: 1 }
-            : product
-        ),
-      };
-    case SUB_TOTAL_PRICE : 
-    return{
-      ...state,
-      totalPrice  : state.productCart.reduce((totalPrice,cartItem) =>{
-        const [price, quantity] = cartItem;
-        const priceTotalItem = price* quantity;
-        totalPrice.totalPrice = totalPrice + priceTotalItem
-        return totalPrice;
-      } ,{
-        totalPrice : 0,
-      } )
     }
 
-    default: 
+    case ADD_QUANTITY: {
+      const { id } = action.payload;
+      const item = state.items[id];
+
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [id]: {
+            ...item,
+            quantity: item.quantity + 1,
+          },
+        },
+        totalPrice: state.totalPrice + dollersToCents(item.price),
+      };
+    }
+
+    case SUB_QUANTITY: {
+      const id = action.payload;
+      const item = state.items[id];
+      //Remove item if quantity raches 0
+      if (item.quantity === 1) {
+        Object.fromEntries(
+          Object.entries(state.items).filter(
+            (item) => item[0] !== id.toString()
+          )
+        );
+
+        return {
+          ...state,
+          items: Object.fromEntries(
+            Object.entries(state.items).filter(([key]) => key !== id.toString())
+          ),
+          itemsIds: state.itemsIds.filter((itemId) => itemId !== id),
+          totalPrice: state.totalPrice - dollersToCents(item.price),
+        };
+      }
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [id]: {
+            ...item,
+            quantity: item.quantity - 1,
+          },
+        },
+        totalPrice: state.totalPrice - dollersToCents(item.price),
+      };
+    }
+
+    case EMPTY_CART:
+      return initalState;
+
+    default:
       return state;
   }
 };
